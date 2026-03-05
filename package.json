@@ -1,0 +1,6 @@
+{
+  "name": "sbxnc-blob-server",
+  "dependencies": {
+    "@netlify/blobs": "^7.0.0"
+  }
+}
