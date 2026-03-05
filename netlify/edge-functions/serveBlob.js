@@ -1,9 +1,8 @@
 import { getStore } from "@netlify/blobs"
 
-export default async (req, context) => {
+export default async (req) => {
 
   const url = new URL(req.url)
-
   const id = url.pathname.replace("/blob/", "")
 
   const store = getStore("sbxnc")
@@ -15,7 +14,6 @@ export default async (req, context) => {
   }
 
   return new Response(blob)
-
 }
 
 export const config = {
