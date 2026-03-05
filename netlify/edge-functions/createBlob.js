@@ -1,28 +1,21 @@
 import { getStore } from "@netlify/blobs"
 
-export default async (req, context) => {
+export async function handler(event) {
 
-  if (req.method !== "POST") {
-    return new Response("POST required", { status: 405 })
+  if (event.httpMethod !== "POST") {
+    return { statusCode: 405, body: "POST required" }
   }
 
   const store = getStore("sbxnc")
 
-  const body = await req.arrayBuffer()
-
   const id = crypto.randomUUID()
 
-  await store.set(id, body)
+  await store.set(id, event.body)
 
-  const url = new URL(req.url)
+  const url = `https://sbxnc.netlify.app/.netlify/functions/serveBlob?id=${id}`
 
-  return new Response(JSON.stringify({
-    url: `${url.origin}/blob/${id}`
-  }), {
-    headers: { "content-type": "application/json" }
-  })
-}
-
-export const config = {
-  path: "/api/blob/create"
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ url })
+  }
 }
