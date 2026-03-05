@@ -1,21 +1,22 @@
 import { getStore } from "@netlify/blobs"
 
-export default async (req) => {
+export async function handler(event) {
 
-  const url = new URL(req.url)
-  const id = url.pathname.replace("/blob/", "")
+  const id = event.queryStringParameters.id
 
   const store = getStore("sbxnc")
 
-  const blob = await store.get(id, { type: "arrayBuffer" })
+  const blob = await store.get(id)
 
   if (!blob) {
-    return new Response("Blob not found", { status: 404 })
+    return {
+      statusCode: 404,
+      body: "Blob not found"
+    }
   }
 
-  return new Response(blob)
-}
-
-export const config = {
-  path: "/blob/*"
+  return {
+    statusCode: 200,
+    body: blob
+  }
 }
