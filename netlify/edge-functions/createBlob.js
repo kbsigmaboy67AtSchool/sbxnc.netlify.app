@@ -19,11 +19,8 @@ export default async (req, context) => {
   return new Response(JSON.stringify({
     url: `${url.origin}/blob/${id}`
   }), {
-    headers: {
-      "content-type": "application/json"
-    }
+    headers: { "content-type": "application/json" }
   })
-
 }
 
 export const config = {
